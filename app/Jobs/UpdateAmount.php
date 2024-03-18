@@ -10,6 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Services\CustomerService;
 use App\Repositories\CustomerRepository;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 
 class UpdateAmount implements ShouldQueue
@@ -29,12 +30,24 @@ class UpdateAmount implements ShouldQueue
 
     public function handle(): void
     {
-        $customerToUpdate = [
-            'name' => $this->customerDbData['name'],
-            'amount' => $this->newAmount,
-            'before_amount' => $this->customerDbData['amount']
-        ];
+        DB::beginTransaction();
+        try{
+            $amount = $this->customerService->getAmount($this->customerDbData['id']);
+            Log::info(['amountss' => $this->newAmount, 'amouuunt' => $amount]);
+            if($this->newAmount > $amount->amount){
+                $customerToUpdate = [
+                    'name' => $this->customerDbData['name'],
+                    'amount' => $this->newAmount,
+                    'before_amount' => $this->customerDbData['amount']
+                ];
 
-        $this->customerService->update($this->customerDbData['id'], $customerToUpdate);
+                $this->customerService->update($this->customerDbData['id'], $customerToUpdate);
+            }
+
+            DB::commit();
+        }catch(Exception $error){
+            Log::error(["Error Update Amount Job" => $error->getMessage()]);
+            DB::rollBack();
+        }
     }
 }
