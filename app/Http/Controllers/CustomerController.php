@@ -44,19 +44,6 @@ class CustomerController extends Controller
         }
     }
 
-    // public function update(CustomerRequest $request, $id)
-    // {
-    //     try{
-    //         return response()->json($this->customerService->update($id, $request->all()), 200);
-    //     }catch(BusinessException $error){
-    //         Log::error($error->getMessage());
-    //         return response()->json($error->getMessage(), 400);
-    //     }catch(Exception $error){
-    //         Log::error($error->getMessage());
-    //         return response()->json($error->getMessage(), 500);
-    //     }
-    // }
-
     public function getAmount($id)
     {
         return response()->json($this->customerService->getAmount($id), 200);

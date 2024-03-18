@@ -11,9 +11,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(CustomerService::class, function ($app) {
-            return new CustomerService($app->make(CustomerRepository::class));
-        });
+        // $this->app->bind(CustomerService::class, function ($app) {
+        //     return new CustomerService($app->make(CustomerRepository::class));
+        // });
     }
 
     /**

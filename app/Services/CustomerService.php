@@ -52,19 +52,6 @@ class CustomerService
         return 'Enviado para Fila';
     }
 
-    public function updateThread2($id, $customerData)
-    {
-        $amount = $customerData['amount'];
-        $result;
-
-        for ($i = 0; $i < 10; $i++) {
-            $teste = new teste($amount, $id);
-            $result[$i] = $teste->handle();
-            $amount++;
-        }
-        dd($result);
-    }
-
     public function getAmount($id){
         return $this->customerRepository->getAmount($id);
     }

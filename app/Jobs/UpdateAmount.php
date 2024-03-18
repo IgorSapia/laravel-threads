@@ -33,7 +33,7 @@ class UpdateAmount implements ShouldQueue
         DB::beginTransaction();
         try{
             $amount = $this->customerService->getAmount($this->customerDbData['id']);
-            Log::info(['amountss' => $this->newAmount, 'amouuunt' => $amount]);
+
             if($this->newAmount > $amount->amount){
                 $customerToUpdate = [
                     'name' => $this->customerDbData['name'],
