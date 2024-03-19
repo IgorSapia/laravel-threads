@@ -2,15 +2,16 @@
 
 namespace App\Jobs;
 
+use Exception;
 use Illuminate\Bus\Queueable;
+use App\Services\CustomerService;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Queue\SerializesModels;
+use App\Repositories\CustomerRepository;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use App\Services\CustomerService;
-use App\Repositories\CustomerRepository;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
 
 
 class UpdateAmount implements ShouldQueue
@@ -30,7 +31,6 @@ class UpdateAmount implements ShouldQueue
 
     public function handle(): void
     {
-        DB::beginTransaction();
         try{
             $amount = $this->customerService->getAmount($this->customerDbData['id']);
 
@@ -43,11 +43,8 @@ class UpdateAmount implements ShouldQueue
 
                 $this->customerService->update($this->customerDbData['id'], $customerToUpdate);
             }
-
-            DB::commit();
         }catch(Exception $error){
             Log::error(["Error Update Amount Job" => $error->getMessage()]);
-            DB::rollBack();
         }
     }
 }

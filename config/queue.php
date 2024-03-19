@@ -35,11 +35,11 @@ return [
         ],
 
         'database' => [
-            'driver' => 'database',
+            'driver' => 'mongodb',
+            'connection' => 'mongodb',
             'table' => 'jobs',
             'queue' => 'default',
-            'retry_after' => 90,
-            'after_commit' => false,
+            'expire' => 60,
         ],
 
         'beanstalkd' => [
@@ -72,11 +72,11 @@ return [
         ],
 
         'upload_amount' => [
-            'driver' => 'database',
+            'driver' => 'mongodb',
+            'connection' => 'mongodb',
             'table' => 'jobs',
             'queue' => 'upload_amount',
-            'retry_after' => 90,
-            'max_workers' => 5,
+            'expire' => 60,
         ],
 
     ],
@@ -93,8 +93,9 @@ return [
     */
 
     'failed' => [
-        'driver' => env('QUEUE_FAILED_DRIVER', 'database-uuids'),
-        'database' => env('DB_CONNECTION', 'mysql'),
+        'driver' => 'mongodb',
+        // You can also specify your jobs specific database created on config/database.php
+        'database' => 'mongodb-job',
         'table' => 'failed_jobs',
     ],
 

@@ -16,14 +16,16 @@ class CustomerRepository extends Repository
     }
 
     public function update($id, $customerData){
-        return $this->model::where('id', $id)->update($customerData);
+        $customer = $this->model::find($id);
+        $customer->fill($customerData);
+        return $customer->save();
     }
 
     public function getAmount($id){
-        return $this->model::select('amount')->where('id', $id)->first();
+        return $this->model::select('amount')->where('_id', $id)->first();
     }
 
     public function checkCustomer($id){
-        return $this->model::findOrFail($id);
+        return $this->model::find($id);
     }
 }
